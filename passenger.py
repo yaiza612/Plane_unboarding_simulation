@@ -30,8 +30,8 @@ class Passenger:
             if self.needs_luggage:
                 desired_place = (row_size+1, self.place[1])
             else:
-                takeClosest = lambda num, collection: min(collection, key=lambda x: abs(x - num))
-                desired_exit = takeClosest(self.place[1], exits)
+                take_closest = lambda num, collection: min(collection, key=lambda x: abs(x - num))
+                desired_exit = take_closest(self.place[1], exits)
                 desired_place = (row_size+1, int(self.place[1]+sign((desired_exit[1])-self.place[1])))
         return desired_place
 
@@ -46,9 +46,20 @@ class Passenger:
             self.intention = self.intend(row_size, exits)
         return self.intention
 
-    def act(self):
-        pass
-
+    def act(self, exits):
+        """
+        Actualizing the object Passenger with their actions.
+        :return: After actualizes check need_luggage or not and return True if left the plane, otherwise
+        return False and give again the value None to intention of the object Passenger.
+        """
+        if self.intention != self.place:
+            self.place = self.intention
+            if self.place[1] in exits:
+                return True
+        else:
+            self.needs_luggage = False
+        self.intention = None
+        return False
 
 
 if __name__ == "__main__":
