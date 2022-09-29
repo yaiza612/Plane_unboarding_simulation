@@ -10,6 +10,7 @@ class Passenger:
         :param place: Represent the coordinates in the object Plane (x,y)
         :param minor: Is a True/False statement indicating if the passenger is underage or not
         """
+        self.intention = None
         self.needs_luggage = statement
         self.place = place
         self.minor = minor
@@ -34,8 +35,20 @@ class Passenger:
                 desired_place = (row_size+1, int(self.place[1]+sign((desired_exit[1])-self.place[1])))
         return desired_place
 
+    def collect_intention(self, row_size, exits):
+        """
+        Collecting the desired place in the object Passenger
+        :param row_size: size of places in each side of the object plane
+        :param exits: list of exists (columns in the object plane)
+        :return: self.intention
+        """
+        if self.intention is None:
+            self.intention = self.intend(row_size, exits)
+        return self.intention
+
     def act(self):
         pass
+
 
 
 if __name__ == "__main__":
