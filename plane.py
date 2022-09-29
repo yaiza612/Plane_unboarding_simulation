@@ -26,6 +26,7 @@ class Plane:
         self.passengers = []
         self.available_passenger_indices = list(range(len(luggages)))
         self.populate_with_passengers(luggages, places, minors)
+        self.done = False
 
     def populate_with_passengers(self, luggages, places, minors):
         for luggage, place, minor in zip(luggages, places, minors):
@@ -56,6 +57,9 @@ class Plane:
                         self.available_passenger_indices.remove(passenger_idx)
                     action_taken = True
                     passengers_to_act.remove(passenger_idx)
+        if len(self.available_passenger_indices) == 0:
+            self.done = True
+        return self.done
 
     def display(self):
         plt.imshow(self.coordinate_system)
