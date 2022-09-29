@@ -1,18 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 from passenger import Passenger
 
 
 class Plane:
-    """
-
-    """
     def __init__(self, x_dim, y_dim, exit_rows, luggages, places, minors):
         """
 
         :param x_dim: The number of seats in each row of the plane
         :param y_dim: The number of rows in the plane
-        :param exit_rows: Tuple of row numbers of exit points
+        :param exit_rows: List of row numbers of exit points
         """
         assert x_dim % 2 == 0, f"We only consider planes that have an even amount of seats per row"
         assert np.min(exit_rows) >= 0 and np.max(exit_rows) < y_dim, \
@@ -26,6 +24,7 @@ class Plane:
             self.coordinate_system[exit_row, :, 0] = 1
         self.coordinate_system[:, self.row_size, 1] = 1
         self.passengers = []
+        self.available_passenger_indices = list(range(len(luggages)))
         self.populate_with_passengers(luggages, places, minors)
 
     def populate_with_passengers(self, luggages, places, minors):
@@ -41,13 +40,22 @@ class Plane:
         self.coordinate_system[old_pos[0], old_pos[1], 2] = 0
 
     def act_on_intentions(self):
-        for passenger in self.passengers:
-            if passenger.on_plane:
-                if not passenger.has_acted:
-                    intention = passenger.collect_intention()
-                    if self.is_free(intention):
-                        self.update_position(intention, passenger.position)
-                        passenger.act()
+        passengers_to_act = self.available_passenger_indices[::]
+        action_taken = True
+        while action_taken:  # as long as a passenger can do an action he planned, we continue the time-step
+            action_taken = False
+            # shuffle the indices to simulate random ordering of priorities
+            random.shuffle(passengers_to_act)
+            for passenger_idx in passengers_to_act:
+                passenger = self.passengers[passenger_idx]
+                intention = passenger.collect_intention(self.row_size, self.exit_rows)
+                if self.is_free(intention):
+                    self.update_position(intention, passenger.position)
+                    passenger_left_plane = passenger.act(self.exit_rows)
+                    if passenger_left_plane:
+                        self.available_passenger_indices.remove(passenger_idx)
+                    action_taken = True
+                    passengers_to_act.remove(passenger_idx)
 
     def display(self):
         plt.imshow(self.coordinate_system)
@@ -55,7 +63,7 @@ class Plane:
 
 
 if __name__ == '__main__':
-    plane = Plane(x_dim=6, y_dim=10, exit_rows=(3, 7),
+    plane = Plane(x_dim=6, y_dim=10, exit_rows=[3, 7],
                   luggages=[True, False],
                   places=[(2, 5), (5, 4)],
                   minors=[False, False])
