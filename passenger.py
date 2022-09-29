@@ -15,6 +15,12 @@ class Passenger:
         self.minor = minor
 
     def intend(self, row_size, exits):
+        """
+        Function to obtain the intention of the passenger
+        :param row_size: size of places in each side of the object plane
+        :param exits: list of exists (columns in the object plane)
+        :return: desired place for the passenger
+        """
         sign = lambda x: math.copysign(1, x)
         on_aisle = (row_size + 1, self.place[1])
         if on_aisle != self.place:
@@ -27,6 +33,9 @@ class Passenger:
                 desired_exit = takeClosest(self.place[1], exits)
                 desired_place = (row_size+1, int(self.place[1]+sign((desired_exit[1])-self.place[1])))
         return desired_place
+
+    def act(self):
+        pass
 
 
 if __name__ == "__main__":
