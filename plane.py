@@ -31,14 +31,14 @@ class Plane:
     def populate_with_passengers(self, luggages, places, minors):
         for luggage, place, minor in zip(luggages, places, minors):
             self.passengers.append(Passenger(luggage, place, minor))
-            self.coordinate_system[place[0], place[1], 2] = 1
+            self.coordinate_system[place[1], place[0], 2] = 1
 
     def is_free(self, place_request):
-        return self.coordinate_system[place_request[0], place_request[1], 2] == 0
+        return self.coordinate_system[place_request[1], place_request[0], 2] == 0
 
     def update_position(self, new_pos, old_pos):
-        self.coordinate_system[new_pos[0], new_pos[1], 2] = 1
-        self.coordinate_system[old_pos[0], old_pos[1], 2] = 0
+        self.coordinate_system[new_pos[1], new_pos[0], 2] = 1
+        self.coordinate_system[old_pos[1], old_pos[0], 2] = 0
 
     def act_on_intentions(self):
         passengers_to_act = self.available_passenger_indices[::]
@@ -51,7 +51,7 @@ class Plane:
                 passenger = self.passengers[passenger_idx]
                 intention = passenger.collect_intention(self.row_size, self.exit_rows)
                 if self.is_free(intention):
-                    self.update_position(intention, passenger.position)
+                    self.update_position(intention, passenger.place)
                     passenger_left_plane = passenger.act(self.exit_rows)
                     if passenger_left_plane:
                         self.available_passenger_indices.remove(passenger_idx)
