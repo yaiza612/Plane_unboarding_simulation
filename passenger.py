@@ -23,16 +23,16 @@ class Passenger:
         :return: desired place for the passenger
         """
         sign = lambda x: math.copysign(1, x)
-        on_aisle = (row_size + 1, self.place[1])
+        on_aisle = (row_size, self.place[1])
         if on_aisle != self.place:
             desired_place = (int(self.place[0] + sign((row_size - self.place[0]))), self.place[1])
         else:
             if self.needs_luggage:
-                desired_place = (row_size+1, self.place[1])
+                desired_place = (row_size, self.place[1])
             else:
                 take_closest = lambda num, collection: min(collection, key=lambda x: abs(x - num))
                 desired_exit = take_closest(self.place[1], exits)
-                desired_place = (row_size+1, int(self.place[1]+sign(desired_exit-self.place[1])))
+                desired_place = (row_size, int(self.place[1]+sign(desired_exit-self.place[1])))
         return desired_place
 
     def collect_intention(self, row_size, exits):

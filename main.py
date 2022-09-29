@@ -18,10 +18,18 @@ from plane import Plane
 from passenger import Passenger
 
 if __name__ == "__main__":
-    plane = Plane(x_dim=6, y_dim=10, exit_rows=[3, 7],
-                  luggages=[True, False],
-                  places=[(2, 5), (5, 4)],
-                  minors=[False, False])
+    plane = Plane(x_dim=6, y_dim=20, exit_rows=[3, 7],
+                  luggages=[True],
+                  places=[(0,10)],
+                  minors=[False])
+    plane.display()
+    plane.act_on_intentions()
+    plane.display()
+    plane.act_on_intentions()
+    plane.display()
+    plane.act_on_intentions()
+    plane.display()
+    plane.act_on_intentions()
     plane.display()
     plane.act_on_intentions()
     plane.display()
