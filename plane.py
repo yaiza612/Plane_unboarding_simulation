@@ -7,26 +7,23 @@ class Plane:
     """
 
     """
-    def __init__(self, x_dim, y_dim, exits, luggages, places, minors):
+    def __init__(self, x_dim, y_dim, exit_rows, luggages, places, minors):
         """
 
         :param x_dim: The number of seats in each row of the plane
         :param y_dim: The number of rows in the plane
-        :param exits: Tuple of row numbers of exit points
+        :param exit_rows: Tuple of row numbers of exit points
         """
-        assert x_dim % 2 == 0, f"We only consider planes that have an even amount of seats per row \n "
+        assert x_dim % 2 == 0, f"We only consider planes that have an even amount of seats per row"
+        assert np.min(exit_rows) >= 0 and np.max(exit_rows) < y_dim, \
+            f"Each exit row must exist in the dimensions of the plane"
         self.x_dim = x_dim
         self.y_dim = y_dim
         self.row_size = self.x_dim//2
-        self.exits = exits
-        self.coordinate_system = np.zeros((y_dim + len(self.exits), x_dim + 1, 3))
-        offset = 0
-        for exit in self.exits:
-            if exit == -1:
-                self.coordinate_system[0, :, 0] = 1
-            else:
-                self.coordinate_system[exit + offset, :, 0] = 1
-            offset += 1
+        self.exit_rows = exit_rows
+        self.coordinate_system = np.zeros((y_dim, x_dim + 1, 3))
+        for exit_row in self.exit_rows:
+            self.coordinate_system[exit_row, :, 0] = 1
         self.coordinate_system[:, self.row_size, 1] = 1
         self.passengers = []
         self.populate_with_passengers(luggages, places, minors)
@@ -58,7 +55,7 @@ class Plane:
 
 
 if __name__ == '__main__':
-    plane = Plane(x_dim=6, y_dim=10, exits=(3, 7),
+    plane = Plane(x_dim=6, y_dim=10, exit_rows=(3, 7),
                   luggages=[True, False],
                   places=[(2, 5), (5, 4)],
                   minors=[False, False])
