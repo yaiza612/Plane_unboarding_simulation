@@ -20,18 +20,9 @@ from passenger import Passenger
 if __name__ == "__main__":
     plane = Plane(x_dim=6, y_dim=20, exit_rows=[3, 7],
                   luggages=[True],
-                  places=[(0,10)],
+                  places=[(0, 10)],
                   minors=[False])
-    plane.display()
-    plane.act_on_intentions()
-    plane.display()
-    plane.act_on_intentions()
-    plane.display()
-    plane.act_on_intentions()
-    plane.display()
-    plane.act_on_intentions()
-    plane.display()
-    plane.act_on_intentions()
-    plane.display()
-    plane.act_on_intentions()
+    while not plane.done:
+        plane.display()
+        plane.act_on_intentions()
     plane.display()
