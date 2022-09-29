@@ -32,7 +32,7 @@ class Passenger:
             else:
                 take_closest = lambda num, collection: min(collection, key=lambda x: abs(x - num))
                 desired_exit = take_closest(self.place[1], exits)
-                desired_place = (row_size+1, int(self.place[1]+sign((desired_exit[1])-self.place[1])))
+                desired_place = (row_size+1, int(self.place[1]+sign(desired_exit-self.place[1])))
         return desired_place
 
     def collect_intention(self, row_size, exits):

@@ -14,3 +14,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+from plane import Plane
+from passenger import Passenger
+
+if __name__ == "__main__":
+    plane = Plane(x_dim=6, y_dim=10, exit_rows=[3, 7],
+                  luggages=[True, False],
+                  places=[(2, 5), (5, 4)],
+                  minors=[False, False])
+    plane.display()
+    plane.act_on_intentions()
+    plane.display()
+    plane.act_on_intentions()
+    plane.display()
