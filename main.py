@@ -26,7 +26,7 @@ def generate_places(x_dim, y_dim, exit_rows, num_passengers, luggage_percentage=
         luggages.append(random.random() < luggage_percentage)
         minors.append(random.random() < minor_percentage)
         sampled_place = [random.randint(0, x_dim - 1), random.randint(0, y_dim - 1)]
-        while sampled_place not in places and sampled_place[0] not in exit_rows:
+        while sampled_place not in places and sampled_place[1] not in exit_rows and sampled_place[0] != x_dim//2:
             places.append(sampled_place)
             sampled_place = [random.randint(0, x_dim - 1), random.randint(0, y_dim - 1)]
     return luggages, places, minors
