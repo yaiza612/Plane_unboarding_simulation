@@ -29,19 +29,42 @@ class Plane:
         self.done = False
 
     def populate_with_passengers(self, luggages, places, minors):
+        """
+        This function populates the plane with passengers with certain characteristics which change their behaviour
+        :param luggages: Boolean list signifying if the passenger has a luggage with him
+        :param places: list of tuples with assigned seats of passengers
+        :param minors: Boolean list signifying if the passenger is a minor
+        :return:
+        """
         for luggage, place, minor in zip(luggages, places, minors):
             self.passengers.append(Passenger(luggage, place, minor))
             self.coordinate_system[place[1], place[0], 2] = 1
 
     def is_free(self, place_request, passenger):
+        """
+        Helper function to determine if the passenger can take his action
+        :param place_request: The place the passenger requests
+        :param passenger:
+        :return: True, if the passenger can take his action, False otherwise
+        """
         return self.coordinate_system[place_request[1], place_request[0], 2] == 0 or place_request == passenger.place
 
     def update_position(self, new_pos, old_pos):
+        """
+        Helper function to update the state of the plane
+        :param new_pos: The new position of a passenger
+        :param old_pos: The old position of a passenger
+        :return:
+        """
         self.coordinate_system[old_pos[1], old_pos[0], 2] = 0
         self.coordinate_system[new_pos[1], new_pos[0], 2] = 1
 
-
     def act_on_intentions(self):
+        """
+        The main functionality of this module. According to a predetermined priority,
+        the passengers try to leave the plane in an egoistic fashion.
+        :return:
+        """
         passengers_to_act = self.available_passenger_indices[::]
         action_taken = True
         while action_taken:  # as long as a passenger can do an action he planned, we continue the time-step
@@ -64,6 +87,10 @@ class Plane:
         return self.done
 
     def display(self):
+        """
+        # TODO to be improved
+        :return:
+        """
         plt.imshow(self.coordinate_system)
         plt.show()
 
