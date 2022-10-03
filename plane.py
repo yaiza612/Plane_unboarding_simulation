@@ -55,6 +55,7 @@ class Plane:
                     passenger_left_plane = passenger.act(self.exit_rows)
                     if passenger_left_plane:
                         self.available_passenger_indices.remove(passenger_idx)
+                        self.coordinate_system[passenger.place[1], passenger.place[0], 2] = 0
                     action_taken = True
                     passengers_to_act.remove(passenger_idx)
         if len(self.available_passenger_indices) == 0:
