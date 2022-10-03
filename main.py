@@ -15,13 +15,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from plane import Plane
-from passenger import Passenger
+import random
+
+
+def generate_places(x_dim, y_dim, exit_rows, num_passengers, luggage_percentage=0.7, minor_percentage=0.1):
+    luggages = []
+    places = []
+    minors = []
+    for _ in range(num_passengers):
+        luggages.append(random.random() < luggage_percentage)
+        minors.append(random.random() < minor_percentage)
+        sampled_place = [random.randint(0, x_dim - 1), random.randint(0, y_dim - 1)]
+        while sampled_place not in places and sampled_place[0] not in exit_rows:
+            places.append(sampled_place)
+            sampled_place = [random.randint(0, x_dim - 1), random.randint(0, y_dim - 1)]
+    return luggages, places, minors
+
 
 if __name__ == "__main__":
-    plane = Plane(x_dim=6, y_dim=20, exit_rows=[3, 7],
-                  luggages=[True],
-                  places=[(0, 10)],
-                  minors=[False])
+    x_dim = 6
+    y_dim = 20
+    exit_rows = [3, 7]
+    luggages, places, minors = generate_places(x_dim, y_dim, exit_rows, 10)
+    plane = Plane(x_dim=x_dim, y_dim=y_dim, exit_rows=exit_rows,
+                  luggages=luggages,
+                  places=places,
+                  minors=minors)
     while not plane.done:
         plane.display()
         plane.act_on_intentions()
