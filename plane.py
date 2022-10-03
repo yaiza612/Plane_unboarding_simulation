@@ -92,7 +92,9 @@ class Plane:
         :return:
         """
         plt.imshow(self.coordinate_system)
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
+        plt.close("all")
 
 
 if __name__ == '__main__':
